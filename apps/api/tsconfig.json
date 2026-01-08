@@ -1,7 +1,4 @@
 {
-  "compilerOptions": {
-    "strict": true,
-    "jsx": "react-jsx",
-    "jsxImportSource": "hono/jsx"
-  }
+  "extends": "@mono/tsconfig/base.json",
+  "exclude": ["node_modules"]
 }
