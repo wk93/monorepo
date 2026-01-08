@@ -1,0 +1,10 @@
+{
+  "name": "@mono/eslint",
+  "version": "0.0.0",
+  "private": true,
+  "type": "commonjs",
+  "exports": {
+    "./base": "./base.cjs",
+    "./hono-bun": "./hono-bun.cjs"
+  }
+}
