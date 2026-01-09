@@ -1,11 +1,15 @@
 {
   "name": "monorepo",
   "private": true,
+  "packageManager": "bun@1.2.0",
   "workspaces": [
     "apps/*",
     "libraries/*",
     "packages/*"
   ],
+  "scripts": {
+    "dev": "turbo run dev"
+  },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.3",
     "@eslint/js": "^9.39.2",
@@ -28,6 +32,7 @@
     "eslint-plugin-unicorn": "^62.0.0",
     "eslint-plugin-unused-imports": "^4.3.0",
     "globals": "^17.0.0",
+    "turbo": "^2.7.3",
     "typescript-eslint": "^8.52.0"
   },
   "peerDependencies": {
