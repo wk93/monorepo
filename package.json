@@ -3,7 +3,8 @@
   "private": true,
   "workspaces": [
     "apps/*",
-    "libraries/*"
+    "libraries/*",
+    "packages/*"
   ],
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.3",
