@@ -1,18 +1,5 @@
 {
   "extends": "@mono/tsconfig/base.json",
-  "compilerOptions": {
-    "noEmit": false,
-
-    "rootDir": "./src",
-    "outDir": "./dist",
-
-    "declaration": true,
-    "declarationMap": true,
-    "sourceMap": true,
-
-    "composite": true
-  },
-  "include": ["src/**/*.ts"],
+  "include": ["src/**/*.ts", "test/**/*.ts"],
   "exclude": ["node_modules", "dist"]
 }
-
