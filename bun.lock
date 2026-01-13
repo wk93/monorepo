@@ -36,7 +36,10 @@
     "apps/api": {
       "name": "api",
       "dependencies": {
+        "@mono/core": "workspace:*",
+        "@mono/drizzle": "workspace:*",
         "hono": "^4.11.3",
+        "zod": "^4.3.5",
       },
       "devDependencies": {
         "@mono/tsconfig": "workspace:*",
