@@ -1,7 +1,12 @@
-import { Hono } from "hono";
+import { apiApp } from "./app";
+import { readEnv } from "./env";
 
-const app = new Hono().get("/", (c) => {
-  return c.text("Hello Hono!");
+const env = readEnv(process.env as Record<string, unknown>);
+
+export default apiApp;
+export type AppType = typeof apiApp;
+
+Bun.serve({
+  port: env.PORT,
+  fetch: apiApp.fetch,
 });
-
-export default app;
