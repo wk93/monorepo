@@ -1,3 +1,5 @@
+import type { ContentfulStatusCode } from "hono/utils/http-status";
+
 export type AppErrorCode =
   | "VALIDATION_ERROR"
   | "UNAUTHORIZED"
@@ -7,13 +9,13 @@ export type AppErrorCode =
 
 export class AppError extends Error {
   readonly code: AppErrorCode;
-  readonly status: number;
+  readonly status: ContentfulStatusCode;
   readonly details?: unknown;
 
   constructor(
     code: AppErrorCode,
     message: string,
-    opts?: { status?: number; details?: unknown },
+    opts?: { status?: ContentfulStatusCode; details?: unknown },
   ) {
     super(message);
     this.code = code;
@@ -22,7 +24,7 @@ export class AppError extends Error {
   }
 }
 
-function mapCodeToStatus(code: AppErrorCode): number {
+function mapCodeToStatus(code: AppErrorCode): ContentfulStatusCode {
   switch (code) {
     case "VALIDATION_ERROR":
       return 400;
