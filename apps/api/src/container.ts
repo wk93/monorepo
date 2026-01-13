@@ -1,0 +1,39 @@
+import { AuthService } from "@mono/core/services/auth.service";
+import { UserService } from "@mono/core/services/user.service";
+import { DrizzleUserRepository } from "@mono/drizzle";
+
+import { createDb } from "./adapters/db";
+import { BunPasswordHasher } from "./adapters/password-hasher";
+import { JwtTokenService } from "./adapters/token.service";
+import type { Env } from "./env";
+
+export function buildContainer(env: Env) {
+  const { db, client } = createDb(env);
+
+  const userRepository = new DrizzleUserRepository(db);
+  const passwordHasher = new BunPasswordHasher();
+  const tokenService = new JwtTokenService(env.JWT_SECRET);
+
+  const authService = new AuthService(
+    userRepository,
+    tokenService,
+    passwordHasher,
+  );
+
+  const userService = new UserService(userRepository);
+
+  return {
+    env,
+    db,
+    close: async () => {
+      await client.end({ timeout: 5 });
+    },
+    services: {
+      authService,
+      userService,
+      tokenService,
+    },
+  };
+}
+
+export type Container = ReturnType<typeof buildContainer>;
