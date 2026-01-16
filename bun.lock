@@ -61,6 +61,7 @@
       "name": "@mono/api",
       "dependencies": {
         "@hono/zod-validator": "^0.7.6",
+        "@mono/contracts": "workspace:*",
         "@mono/core": "workspace:*",
         "@mono/drizzle": "workspace:*",
         "hono": "^4.11.4",
