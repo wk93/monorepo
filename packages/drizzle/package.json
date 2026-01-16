@@ -20,6 +20,7 @@
     "dist"
   ],
   "scripts": {
+    "push": "drizzle-kit push",
     "build": "tsc -p tsconfig.build.json",
     "dev": "tsc -p tsconfig.build.json --watch --preserveWatchOutput",
     "typecheck": "tsc -p tsconfig.json --noEmit",
@@ -33,7 +34,8 @@
     "postgres": "^3.4.5"
   },
   "devDependencies": {
-    "@mono/tsconfig": "workspace:*"
+    "@mono/tsconfig": "workspace:*",
+    "drizzle-kit": "^0.31.8"
   },
   "peerDependencies": {
     "typescript": "^5"
