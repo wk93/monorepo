@@ -11,4 +11,4 @@ const container = buildContainer(env);
 
 export const apiApp = new Hono<HonoEnv>()
   .use(containerMiddleware(container))
-  .route("/", routes);
+  .route("/api", routes);

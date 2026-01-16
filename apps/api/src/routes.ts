@@ -9,6 +9,9 @@ import { authMiddleware } from "./middlewares/auth.middleware";
 import type { AuthHonoEnv } from "./types";
 
 export const routes = new Hono<AuthHonoEnv>()
+  .get("/", (c) => {
+    return c.json({ message: "Hello World!" }, 200);
+  })
   .post("/auth/login", zValidator("json", LoginInputSchema), async (c) => {
     const input = c.req.valid("json");
     const container = c.get("container");
