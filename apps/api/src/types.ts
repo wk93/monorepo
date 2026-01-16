@@ -1,7 +1,7 @@
-import type { Container } from "./container";
+import type { Services } from "./services";
 
 export interface Variables {
-  container: Container;
+  services: Services;
 }
 
 export interface HonoEnv {

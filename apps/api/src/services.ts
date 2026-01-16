@@ -7,8 +7,8 @@ import { BunPasswordHasher } from "./adapters/password-hasher";
 import { JwtTokenService } from "./adapters/token.service";
 import type { Env } from "./env";
 
-export function buildContainer(env: Env) {
-  const { db, client } = createDb(env);
+export function buildServices(env: Env) {
+  const { db } = createDb(env);
 
   const userRepository = new DrizzleUserRepository(db);
   const passwordHasher = new BunPasswordHasher();
@@ -23,17 +23,10 @@ export function buildContainer(env: Env) {
   const userService = new UserService(userRepository);
 
   return {
-    env,
-    db,
-    close: async () => {
-      await client.end({ timeout: 5 });
-    },
-    services: {
-      authService,
-      userService,
-      tokenService,
-    },
+    authService,
+    userService,
+    tokenService,
   };
 }
 
-export type Container = ReturnType<typeof buildContainer>;
+export type Services = ReturnType<typeof buildServices>;

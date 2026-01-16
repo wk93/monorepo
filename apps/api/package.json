@@ -2,7 +2,7 @@
   "name": "@mono/api",
   "types": "./dist/types/index.d.ts",
   "scripts": {
-    "dev": "concurrently -n TYPES,API -c auto \"tsc -p tsconfig.types.json --watch --preserveWatchOutput\" \"bun run --hot src/index.ts\""
+    "dev": "concurrently -n TYPES,API -c auto \"tsc -p tsconfig.types.json --watch --preserveWatchOutput\" \"bun run --hot --no-clear-screen src/index.ts\""
   },
   "dependencies": {
     "@hono/zod-validator": "^0.7.6",

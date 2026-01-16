@@ -13,9 +13,8 @@ export const authMiddleware = createMiddleware<AuthHonoEnv>(
       throw new AppError("UNAUTHORIZED", "Missing token");
     }
 
-    const container = c.get("container");
-    const payload =
-      await container.services.tokenService.verifyAccessToken(token);
+    const { tokenService } = c.get("services");
+    const payload = await tokenService.verifyAccessToken(token);
     c.set("auth", payload);
 
     await next();

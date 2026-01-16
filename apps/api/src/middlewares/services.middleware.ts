@@ -1,10 +1,10 @@
 import { createMiddleware } from "hono/factory";
 
-import type { Container } from "../container";
+import type { Services } from "../services";
 import type { HonoEnv } from "../types";
 
-export const containerMiddleware = (container: Container) =>
+export const servicesMiddleware = (services: Services) =>
   createMiddleware<HonoEnv>(async (c, next) => {
-    c.set("container", container);
+    c.set("services", services);
     await next();
   });
