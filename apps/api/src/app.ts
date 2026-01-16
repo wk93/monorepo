@@ -1,4 +1,5 @@
 import { Hono } from "hono";
+import { serveStatic } from "hono/bun";
 
 import { handleError } from "./adapters/error.handler";
 import { servicesMiddleware } from "./middlewares/services.middleware";
@@ -13,4 +14,18 @@ const services = buildServices(env);
 export const apiApp = new Hono<HonoEnv>()
   .onError(handleError)
   .use(servicesMiddleware(services))
-  .route("/api", routes);
+  .route("/api", routes)
+  .use(
+    "/admin/*",
+    serveStatic({
+      root: "../admin/dist",
+      rewriteRequestPath: (path) => path.replace(/^\/admin/, ""),
+    }),
+  )
+  .get(
+    "/admin/*",
+    serveStatic({
+      root: "../admin/dist",
+      path: "index.html",
+    }),
+  );

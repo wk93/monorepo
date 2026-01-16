@@ -4,10 +4,9 @@ import type { routes } from "./routes";
 
 const env = readEnv(process.env as Record<string, unknown>);
 
-export default apiApp;
 export type AppType = typeof routes;
 
-Bun.serve({
+export default {
   port: env.PORT,
   fetch: apiApp.fetch,
-});
+};
