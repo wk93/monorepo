@@ -1,12 +1,14 @@
 import { describe, expect, test } from "bun:test";
 
-import { AppError } from "../src/errors/app-error";
 import type { UserRepository } from "../src/repositories/user.repository";
 import { UserService } from "../src/services/user.service";
 
 describe("core/UserService.getProfile", () => {
   test("throws NOT_FOUND when user does not exist", async () => {
     const users: UserRepository = {
+      async init() {
+        return;
+      },
       async findByEmail() {
         return null;
       },
@@ -16,20 +18,21 @@ describe("core/UserService.getProfile", () => {
     };
 
     const svc = new UserService(users);
-
-    try {
-      await svc.getProfile("u_missing");
-      throw new Error("expected to throw");
-    } catch (err) {
-      expect(err).toBeInstanceOf(AppError);
-      const e = err as AppError;
-      expect(e.code).toBe("NOT_FOUND");
-      expect(e.status).toBe(404);
-    }
+    const dto = await svc.getProfile("u_1");
+    expect(dto).toEqual({
+      ok: false,
+      error: {
+        code: "NOT_FOUND",
+        message: "User not found",
+      },
+    });
   });
 
   test("returns public user DTO with ISO createdAt", async () => {
     const users: UserRepository = {
+      async init() {
+        return;
+      },
       async findByEmail() {
         return null;
       },
@@ -50,10 +53,13 @@ describe("core/UserService.getProfile", () => {
     const dto = await svc.getProfile("u_1");
 
     expect(dto).toEqual({
-      id: "u_1",
-      email: "user@example.com",
-      name: null,
-      createdAt: "2025-01-01T10:00:00.000Z",
+      ok: true,
+      value: {
+        id: "u_1",
+        email: "user@example.com",
+        name: null,
+        createdAt: "2025-01-01T10:00:00.000Z",
+      },
     });
   });
 });

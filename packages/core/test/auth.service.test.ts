@@ -1,6 +1,5 @@
 import { describe, expect, test } from "bun:test";
 
-import { AppError } from "../src/errors/app-error";
 import type { UserRepository } from "../src/repositories/user.repository";
 import type { PasswordHasher } from "../src/security/password-hasher";
 import type { TokenService } from "../src/security/token.service";
@@ -25,6 +24,9 @@ function makeDeps(
   const token = overrides?.token ?? "token_123";
 
   const users: UserRepository = {
+    async init() {
+      return;
+    },
     async findByEmail(email: string) {
       return email === userByEmail?.email ? userByEmail : null;
     },
@@ -44,7 +46,7 @@ function makeDeps(
   };
 
   const hasher: PasswordHasher = {
-    async verify(_password: string, passwordHash: string) {
+    async verify({ passwordHash }: { password: string; passwordHash: string }) {
       if (!passwordHash) throw new Error("missing hash");
       return verifyOk;
     },
@@ -58,33 +60,29 @@ describe("core/AuthService.login", () => {
     const { users, tokens, hasher } = makeDeps({ userByEmail: null });
     const svc = new AuthService(users, tokens, hasher);
 
-    try {
-      await svc.login({
-        email: "nope@example.com",
-        password: "supersecret123",
-      });
-      throw new Error("expected to throw");
-    } catch (err) {
-      expect(err).toBeInstanceOf(AppError);
-      const e = err as AppError;
-      expect(e.code).toBe("UNAUTHORIZED");
-      expect(e.status).toBe(401);
-    }
+    const res = await svc.login({
+      email: "nope@example.com",
+      password: "supersecret123",
+    });
+    expect(res).toEqual({
+      ok: false,
+      error: { code: "UNAUTHORIZED", message: "Invalid email or password" },
+    });
   });
 
   test("throws UNAUTHORIZED when password is invalid", async () => {
     const { users, tokens, hasher } = makeDeps({ verifyOk: false });
     const svc = new AuthService(users, tokens, hasher);
 
-    try {
-      await svc.login({ email: "user@example.com", password: "wrongpass123" });
-      throw new Error("expected to throw");
-    } catch (err) {
-      expect(err).toBeInstanceOf(AppError);
-      const e = err as AppError;
-      expect(e.code).toBe("UNAUTHORIZED");
-      expect(e.status).toBe(401);
-    }
+    const res = await svc.login({
+      email: "user@example.com",
+      password: "wrongpass123",
+    });
+
+    expect(res).toEqual({
+      ok: false,
+      error: { code: "UNAUTHORIZED", message: "Invalid email or password" },
+    });
   });
 
   test("returns LoginResponse when credentials are valid", async () => {
@@ -97,8 +95,11 @@ describe("core/AuthService.login", () => {
     });
 
     expect(res).toEqual({
-      user: { id: "u_1", email: "user@example.com", name: "Wojtek" },
-      tokens: { accessToken: "abc" },
+      ok: true,
+      value: {
+        user: { id: "u_1", email: "user@example.com", name: "Wojtek" },
+        tokens: { accessToken: "abc" },
+      },
     });
   });
 });

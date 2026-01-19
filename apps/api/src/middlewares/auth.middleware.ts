@@ -1,6 +1,6 @@
 import { createMiddleware } from "hono/factory";
 
-import { AppError } from "@mono/core/errors/app-error";
+import type { AppError } from "@mono/core/entities/basic.entity";
 
 import type { AuthHonoEnv } from "../types";
 
@@ -9,7 +9,8 @@ export const authMiddleware = createMiddleware<AuthHonoEnv>(async (c, next) => {
   const token = header.startsWith("Bearer ") ? header.slice(7) : "";
 
   if (!token) {
-    return c.json(new AppError("UNAUTHORIZED", "Missing token"), 401);
+    const err: AppError = { code: "UNAUTHORIZED", message: "Missing token" };
+    return c.json(err, 401);
   }
 
   const { tokenService } = c.get("services");

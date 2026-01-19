@@ -1,4 +1,14 @@
-import type { AppError } from "../errors/app-error";
+export type AppErrorCode =
+  | "VALIDATION_ERROR"
+  | "UNAUTHORIZED"
+  | "NOT_FOUND"
+  | "CONFLICT"
+  | "INTERNAL";
+
+export interface AppError {
+  code: AppErrorCode;
+  message: string;
+}
 
 export interface Ok<T> {
   ok: true;

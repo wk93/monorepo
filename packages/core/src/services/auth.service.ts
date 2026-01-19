@@ -1,7 +1,6 @@
 import type { LoginInput, LoginResponse } from "@mono/contracts/auth";
 
 import type { Result } from "../entities/basic.entity";
-import { AppError } from "../errors/app-error";
 import type { UserRepository } from "../repositories/user.repository";
 import type { PasswordHasher } from "../security/password-hasher";
 import type { TokenService } from "../security/token.service";
@@ -18,7 +17,7 @@ export class AuthService {
     if (!user) {
       return {
         ok: false,
-        error: new AppError("UNAUTHORIZED", "Invalid email or password"),
+        error: { code: "UNAUTHORIZED", message: "Invalid email or password" },
       };
     }
 
@@ -29,7 +28,7 @@ export class AuthService {
     if (!ok) {
       return {
         ok: false,
-        error: new AppError("UNAUTHORIZED", "Invalid email or password"),
+        error: { code: "UNAUTHORIZED", message: "Invalid email or password" },
       };
     }
 
