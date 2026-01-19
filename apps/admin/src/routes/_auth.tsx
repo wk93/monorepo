@@ -1,6 +1,7 @@
 import { createFileRoute, Navigate, Outlet } from "@tanstack/react-router";
 import { useEffect } from "react";
 
+import AuthLayout from "@/components/layout/AuthLayout";
 import { useProfileQuery } from "@/hooks/api/profile/useProfileQuery";
 import { useAuthStore } from "@/store/auth.store";
 
@@ -26,5 +27,9 @@ function RouteComponent() {
     return <Navigate to="/login" />;
   }
 
-  return <Outlet />;
+  return (
+    <AuthLayout>
+      <Outlet />
+    </AuthLayout>
+  );
 }

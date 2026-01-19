@@ -12,6 +12,8 @@
     "lint:fix": "bun run typecheck && eslint . --fix"
   },
   "dependencies": {
+    "@headlessui/react": "^2.2.9",
+    "@heroicons/react": "^2.2.0",
     "@mono/api": "workspace:*",
     "@mono/contracts": "workspace:*",
     "@tailwindcss/vite": "^4.1.18",

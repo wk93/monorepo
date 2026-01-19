@@ -22,7 +22,7 @@ function RouteComponent() {
 
   const helloQuery = useHelloQuery();
   return (
-    <div className="w-screen h-screen bg-blue-950 flex items-center justify-center">
+    <div className="w-screen h-screen bg-gray-800 flex items-center justify-center">
       <div className="border border-gray-300 w-full max-w-md bg-white rounded-lg p-4">
         <form
           className="flex flex-col gap-2"
