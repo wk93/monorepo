@@ -1,8 +1,8 @@
 import { useForm } from "@tanstack/react-form";
 import { createFileRoute } from "@tanstack/react-router";
 
-import { LoginInputSchema } from "@mono/contracts/auth";
-
+import Button from "@/components/form/Button";
+import Input from "@/components/form/Input";
 import { useHelloQuery } from "@/hooks/api/hello";
 import { useLoginMutation } from "@/hooks/api/profile/useLoginMutation";
 
@@ -17,63 +17,63 @@ function RouteComponent() {
     defaultValues: { email: "", password: "" },
     onSubmit: async ({ value }) => {
       await loginMutation.mutateAsync(value);
-      form.reset();
     },
-    validators: { onChange: LoginInputSchema },
   });
 
   const helloQuery = useHelloQuery();
   return (
-    <>
-      {helloQuery.isLoading ? (
-        <div>Wczytywanie</div>
-      ) : helloQuery.data ? (
-        <div>{helloQuery.data.message}</div>
-      ) : (
-        <div>Hello "/"!</div>
-      )}
+    <div className="w-screen h-screen bg-blue-950 flex items-center justify-center">
+      <div className="border border-gray-300 w-full max-w-md bg-white rounded-lg p-4">
+        <form
+          className="flex flex-col gap-2"
+          onSubmit={async (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            await form.handleSubmit();
+          }}
+        >
+          <div className="text-center">
+            {helloQuery.isLoading ? (
+              <div>Wczytywanie</div>
+            ) : helloQuery.data ? (
+              <div>{helloQuery.data.message}</div>
+            ) : (
+              <div>Hello "/"!</div>
+            )}
+          </div>
 
-      <form
-        className="flex flex-col gap-2"
-        onSubmit={async (e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          await form.handleSubmit();
-        }}
-      >
-        <form.Field name="email">
-          {(field) => (
-            <input
-              placeholder="email"
-              className="border border-gray-600"
-              name={field.name}
-              value={field.state.value}
-              onBlur={field.handleBlur}
-              onChange={(e) => {
-                field.handleChange(e.target.value);
-              }}
-            />
-          )}
-        </form.Field>
+          <form.Field name="email">
+            {(field) => (
+              <Input
+                placeholder="email"
+                name={field.name}
+                value={field.state.value}
+                onBlur={field.handleBlur}
+                onChange={(e) => {
+                  field.handleChange(e.currentTarget.value);
+                }}
+              />
+            )}
+          </form.Field>
 
-        <form.Field name="password">
-          {(field) => (
-            <input
-              placeholder="hasło"
-              className="border border-gray-600"
-              type="password"
-              name={field.name}
-              value={field.state.value}
-              onBlur={field.handleBlur}
-              onChange={(e) => {
-                field.handleChange(e.target.value);
-              }}
-            />
-          )}
-        </form.Field>
+          <form.Field name="password">
+            {(field) => (
+              <Input
+                placeholder="hasło"
+                type="password"
+                name={field.name}
+                value={field.state.value}
+                onBlur={field.handleBlur}
+                onChange={(e) => {
+                  field.handleChange(e.currentTarget.value);
+                }}
+              />
+            )}
+          </form.Field>
 
-        <button type="submit">Zaloguj się</button>
-      </form>
-    </>
+          <Button type="submit">Zaloguj się</Button>
+        </form>
+      </div>
+    </div>
   );
 }

@@ -5,10 +5,5 @@ export const Route = createRootRoute({
 });
 
 function RootComponent() {
-  return (
-    <>
-      <div>Hello "__root"!</div>
-      <Outlet />
-    </>
-  );
+  return <Outlet />;
 }

@@ -27,11 +27,10 @@ export const useLoginMutation = () => {
 
     onSuccess: async (data) => {
       if (data) {
-        console.log(data);
         setToken(data.tokens.accessToken);
         queryClient.clear();
         await queryClient.invalidateQueries();
-        navigate({ to: "/" });
+        await navigate({ to: "/" });
       }
     },
   });
