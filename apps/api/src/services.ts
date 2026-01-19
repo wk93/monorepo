@@ -23,7 +23,9 @@ export async function buildServices(env: Env) {
   await userRepository.init({
     admin: {
       email: env.ADMIN_EMAIL,
-      hashedPassword: await passwordHasher.hash(env.ADMIN_PASSWORD),
+      hashedPassword: await passwordHasher.hash({
+        password: env.ADMIN_PASSWORD,
+      }),
     },
   });
 

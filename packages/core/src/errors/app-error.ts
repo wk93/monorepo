@@ -7,18 +7,19 @@ export type AppErrorCode =
   | "CONFLICT"
   | "INTERNAL";
 
-export class AppError extends Error {
+export class AppError {
   readonly code: AppErrorCode;
   readonly status: ContentfulStatusCode;
   readonly details?: unknown;
+  readonly message: string;
 
   constructor(
     code: AppErrorCode,
     message: string,
     opts?: { status?: ContentfulStatusCode; details?: unknown },
   ) {
-    super(message);
     this.code = code;
+    this.message = message;
     this.status = opts?.status ?? mapCodeToStatus(code);
     this.details = opts?.details;
   }

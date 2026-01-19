@@ -1,3 +1,3 @@
 export interface PasswordHasher {
-  verify(password: string, passwordHash: string): Promise<boolean>;
+  verify(data: { password: string; passwordHash: string }): Promise<boolean>;
 }
