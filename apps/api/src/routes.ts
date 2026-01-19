@@ -23,8 +23,6 @@ export const routes = new Hono<AuthHonoEnv>()
         return c.json(result.error, 401);
       }
     } catch (error) {
-      console.log(error);
-
       return c.json(error, 401);
     }
   })
@@ -32,6 +30,10 @@ export const routes = new Hono<AuthHonoEnv>()
     const { sub } = c.get("auth");
     const { userService } = c.get("services");
 
-    const profile = await userService.getProfile(sub);
-    return c.json(UserPublicSchema.parse(profile), 200);
+    const result = await userService.getProfile(sub);
+    if (result.ok) {
+      return c.json(UserPublicSchema.parse(result.value), 200);
+    } else {
+      return c.json(result.error, 401);
+    }
   });

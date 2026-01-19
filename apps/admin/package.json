@@ -13,13 +13,16 @@
   },
   "dependencies": {
     "@mono/api": "workspace:*",
+    "@mono/contracts": "workspace:*",
     "@tailwindcss/vite": "^4.1.18",
+    "@tanstack/react-form": "^1.27.7",
     "@tanstack/react-query": "^5.90.19",
     "@tanstack/react-router": "^1.151.6",
     "hono": "^4.11.4",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
-    "tailwindcss": "^4.1.18"
+    "tailwindcss": "^4.1.18",
+    "zustand": "^5.0.10"
   },
   "devDependencies": {
     "@mono/tsconfig": "workspace:*",
