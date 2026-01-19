@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import "./App.css";
 import client from "./utils/client";
 
 function App() {
