@@ -5,6 +5,7 @@
   "type": "commonjs",
   "exports": {
     "./base": "./base.cjs",
-    "./hono-bun": "./hono-bun.cjs"
+    "./hono-bun": "./hono-bun.cjs",
+    "./react-vite": "./react-vite.cjs"
   }
 }
