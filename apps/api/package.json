@@ -4,7 +4,10 @@
   "scripts": {
     "dev": "concurrently -n TYPES,API -c auto \"tsc -p tsconfig.types.json --watch --preserveWatchOutput\" \"bun run --hot --no-clear-screen src/index.ts\"",
     "build": "tsc -p tsconfig.types.json",
-    "start": "bun run src/index.ts"
+    "start": "bun run src/index.ts",
+    "typecheck": "tsc -b --pretty false",
+    "lint": "bun run typecheck && eslint .",
+    "lint:fix": "bun run typecheck && eslint . --fix"
   },
   "dependencies": {
     "@hono/zod-validator": "^0.7.6",

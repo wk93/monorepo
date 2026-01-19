@@ -6,7 +6,10 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build --base=/admin",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "typecheck": "tsc -b --pretty false",
+    "lint": "bun run typecheck && eslint .",
+    "lint:fix": "bun run typecheck && eslint . --fix"
   },
   "dependencies": {
     "@mono/api": "workspace:*",

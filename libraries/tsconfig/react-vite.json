@@ -5,14 +5,8 @@
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "jsx": "react-jsx",
     "types": ["vite/client"],
-
     "useDefineForClassFields": true,
-
     "moduleDetection": "force",
-    "allowImportingTsExtensions": true,
-
-    "noUncheckedSideEffectImports": true,
-
-    "incremental": true
+    "noUncheckedSideEffectImports": true
   }
 }

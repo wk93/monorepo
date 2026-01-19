@@ -10,6 +10,16 @@
       "persistent": true,
       "cache": false
     },
-    "start": { "cache": false }
+    "start": { "cache": false },
+    "typecheck": {
+      "cache": true
+    },
+    "lint": {
+      "dependsOn": ["^typecheck"],
+      "cache": true
+    },
+    "lint:fix": {
+      "cache": false
+    }
   }
 }

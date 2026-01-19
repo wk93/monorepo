@@ -10,7 +10,11 @@
   "scripts": {
     "dev": "turbo run dev",
     "build": "turbo run build",
-    "start": "turbo run start"
+    "start": "turbo run start",
+    "check": "turbo run typecheck lint",
+    "lint": "turbo run lint",
+    "lint:fix": "turbo run lint:fix",
+    "typecheck": "turbo run typecheck"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.3",

@@ -3,7 +3,7 @@ import ReactDOM from "react-dom/client";
 
 import "./style.css";
 
-import { routeTree } from "./routeTree.gen.ts";
+import { routeTree } from "./routeTree.gen";
 
 const router = createRouter({
   routeTree,
