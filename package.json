@@ -20,6 +20,8 @@
     "@eslint/eslintrc": "^3.3.3",
     "@eslint/js": "^9.39.2",
     "@mono/eslint": "workspace:*",
+    "@tanstack/eslint-plugin-query": "^5.91.3",
+    "@tanstack/eslint-plugin-router": "^1.141.0",
     "@types/bun": "latest",
     "@typescript-eslint/eslint-plugin": "^8.52.0",
     "@typescript-eslint/parser": "^8.52.0",
