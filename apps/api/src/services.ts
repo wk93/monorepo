@@ -7,7 +7,7 @@ import { BunPasswordHasher } from "./adapters/password-hasher";
 import { JwtTokenService } from "./adapters/token.service";
 import type { Env } from "./env";
 
-export function buildServices(env: Env) {
+export async function buildServices(env: Env) {
   const { db } = createDb(env);
 
   const userRepository = new DrizzleUserRepository(db);
@@ -20,6 +20,13 @@ export function buildServices(env: Env) {
     passwordHasher,
   );
 
+  await userRepository.init({
+    admin: {
+      email: env.ADMIN_EMAIL,
+      hashedPassword: await passwordHasher.hash(env.ADMIN_PASSWORD),
+    },
+  });
+
   const userService = new UserService(userRepository);
 
   return {
@@ -29,4 +36,4 @@ export function buildServices(env: Env) {
   };
 }
 
-export type Services = ReturnType<typeof buildServices>;
+export type Services = Awaited<ReturnType<typeof buildServices>>;

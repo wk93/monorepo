@@ -9,7 +9,7 @@ import { buildServices } from "./services";
 import type { HonoEnv } from "./types";
 
 const env = readEnv(process.env as Record<string, unknown>);
-const services = buildServices(env);
+const services = await buildServices(env);
 
 export const apiApp = new Hono<HonoEnv>()
   .onError(handleError)
