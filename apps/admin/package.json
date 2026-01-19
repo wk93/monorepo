@@ -18,6 +18,7 @@
     "tailwindcss": "^4.1.18"
   },
   "devDependencies": {
+    "@mono/tsconfig": "workspace:*",
     "@tanstack/router-plugin": "^1.151.6",
     "@types/node": "^24.10.1",
     "@types/react": "^19.2.5",
