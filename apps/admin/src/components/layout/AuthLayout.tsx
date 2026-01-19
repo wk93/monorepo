@@ -8,6 +8,7 @@ import {
   MenuItems,
 } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import clsx from "clsx";
 import type { PropsWithChildren } from "react";
 
 const user = {
@@ -28,10 +29,6 @@ const userNavigation = [
   { name: "Settings", href: "#" },
   { name: "Sign out", href: "#" },
 ];
-
-function classNames(...classes) {
-  return classes.filter(Boolean).join(" ");
-}
 
 type Props = PropsWithChildren;
 
@@ -59,7 +56,7 @@ const AuthLayout: React.FC<Props> = ({ children }) => {
                             key={item.name}
                             href={item.href}
                             aria-current={item.current ? "page" : undefined}
-                            className={classNames(
+                            className={clsx(
                               item.current
                                 ? "bg-gray-900 text-white"
                                 : "text-gray-300 hover:bg-white/5 hover:text-white",
@@ -140,7 +137,7 @@ const AuthLayout: React.FC<Props> = ({ children }) => {
                     as="a"
                     href={item.href}
                     aria-current={item.current ? "page" : undefined}
-                    className={classNames(
+                    className={clsx(
                       item.current
                         ? "bg-gray-900 text-white"
                         : "text-gray-300 hover:bg-white/5 hover:text-white",
