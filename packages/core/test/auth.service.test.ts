@@ -1,8 +1,8 @@
 import { describe, expect, test } from "bun:test";
 
+import type { PasswordHasher } from "../src/ports/password-hasher.port";
+import type { TokenService } from "../src/ports/token-service.port";
 import type { UserRepository } from "../src/repositories/user.repository";
-import type { PasswordHasher } from "../src/security/password-hasher";
-import type { TokenService } from "../src/security/token.service";
 import { AuthService } from "../src/services/auth.service";
 
 function makeDeps(

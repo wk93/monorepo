@@ -1,9 +1,9 @@
 import type { LoginInput, LoginResponse } from "@mono/contracts/auth";
 
 import type { Result } from "../entities/basic.entity";
+import type { PasswordHasher } from "../ports/password-hasher.port";
+import type { TokenService } from "../ports/token-service.port";
 import type { UserRepository } from "../repositories/user.repository";
-import type { PasswordHasher } from "../security/password-hasher";
-import type { TokenService } from "../security/token.service";
 
 export class AuthService {
   constructor(
