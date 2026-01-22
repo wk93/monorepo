@@ -1,4 +1,6 @@
 export interface UserRoleRepository {
-  getUserRoleId(data: { userId: string }): Promise<string | null>;
+  getUserRole(data: {
+    userId: string;
+  }): Promise<{ roleId: string; hasFullAccess: boolean } | null>;
   setUserRole(data: { userId: string; roleId: string }): Promise<void>;
 }

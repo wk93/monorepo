@@ -24,8 +24,8 @@ export class AuthorizationService {
     private readonly rolePermissionRepository: RolePermissionRepository,
   ) {}
 
-  async getUserRoleId({ userId }: { userId: string }): Promise<string | null> {
-    return this.userRoleRepository.getUserRoleId({ userId });
+  getUserRole({ userId }: { userId: string }) {
+    return this.userRoleRepository.getUserRole({ userId });
   }
 
   async hasPermissionByRole(data: {

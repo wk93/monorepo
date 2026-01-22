@@ -18,9 +18,13 @@ export const authMiddleware = createMiddleware<AuthHonoEnv>(async (c, next) => {
   }
 
   const userId = payload.sub;
-  const roleId = await authorizationService.getUserRoleId({ userId });
+  const role = await authorizationService.getUserRole({ userId });
 
-  c.set("auth", { userId, roleId });
+  c.set("auth", {
+    userId,
+    roleId: role?.roleId ?? null,
+    hasFullAccess: role?.hasFullAccess ?? false,
+  });
   await next();
   return;
 });

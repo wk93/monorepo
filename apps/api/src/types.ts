@@ -12,6 +12,7 @@ export interface AuthVariables extends Variables {
   auth: {
     userId: string;
     roleId: string | null;
+    hasFullAccess: boolean;
   };
 }
 

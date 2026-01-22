@@ -6,6 +6,7 @@ import {
   primaryKey,
   text,
   timestamp,
+  uniqueIndex,
   uuid,
   varchar,
 } from "drizzle-orm/pg-core";
@@ -22,16 +23,20 @@ export const permissionKeys = pgTable("permission_keys", {
   description: text("description"),
 });
 
-export const roles = pgTable("roles", {
-  id: uuid("id").primaryKey().defaultRandom(),
-  // tenantId: uuid("tenant_id"), uncomment for multi-tenant
-  name: varchar("name", { length: 64 }).notNull(),
-  description: text("description"),
-  isSystem: boolean("is_system").notNull().default(false),
-  createdAt: timestamp("created_at", { withTimezone: true })
-    .notNull()
-    .defaultNow(),
-});
+export const roles = pgTable(
+  "roles",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    // tenantId: uuid("tenant_id"), uncomment for multi-tenant
+    name: varchar("name", { length: 64 }).notNull(),
+    description: text("description"),
+    hasFullAccess: boolean("has_full_access").notNull().default(false),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+  },
+  (t) => [uniqueIndex("roles_name_uq").on(t.name)],
+);
 
 export const rolePermissions = pgTable(
   "role_permissions",

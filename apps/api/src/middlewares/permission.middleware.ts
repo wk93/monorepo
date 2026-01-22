@@ -13,7 +13,12 @@ export const requirePermission = (
     const auth = c.get("auth");
 
     if (!auth.roleId) {
-      return c.json({ code: "UNAUTHORIZED", message: "No role assigned" }, 403);
+      return c.json({ code: "FORBIDDEN", message: "No role assigned" }, 403);
+    }
+
+    if (auth.hasFullAccess) {
+      await next();
+      return;
     }
 
     const ok = await authorizationService.hasPermissionByRole({
@@ -23,10 +28,7 @@ export const requirePermission = (
     });
 
     if (!ok) {
-      return c.json(
-        { code: "UNAUTHORIZED", message: "Permission denied" },
-        403,
-      );
+      return c.json({ code: "FORBIDDEN", message: "Permission denied" }, 403);
     }
 
     await next();

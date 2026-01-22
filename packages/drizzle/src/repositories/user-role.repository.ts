@@ -9,12 +9,29 @@ import { userRoles } from "../schema/permissions";
 export class DrizzleUserRoleRepository implements UserRoleRepository {
   constructor(private readonly db: PostgresJsDatabase<Schema>) {}
 
-  async getUserRoleId(data: { userId: string }): Promise<string | null> {
-    const role = await this.db.query.userRoles.findFirst({
-      where: eq(userRoles.userId, data.userId),
+  async getUserRole({
+    userId,
+  }: {
+    userId: string;
+  }): Promise<{ roleId: string; hasFullAccess: boolean } | null> {
+    const row = await this.db.query.userRoles.findFirst({
+      where: eq(userRoles.userId, userId),
+      columns: {
+        roleId: true,
+      },
+      with: {
+        role: {
+          columns: { hasFullAccess: true },
+        },
+      },
     });
 
-    return role?.roleId ?? null;
+    if (!row) return null;
+
+    return {
+      roleId: row.roleId,
+      hasFullAccess: row.role.hasFullAccess,
+    };
   }
 
   async setUserRole({
