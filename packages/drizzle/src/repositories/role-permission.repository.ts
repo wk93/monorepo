@@ -15,6 +15,24 @@ export class DrizzleRolePermissionRepository
 {
   constructor(private readonly db: PostgresJsDatabase<Schema>) {}
 
+  async getRolePermission({
+    roleId,
+    permissionKey,
+  }: {
+    roleId: string;
+    permissionKey: string;
+  }): Promise<GrantedPermissionValue | null> {
+    const row = await this.db.query.rolePermissions.findFirst({
+      where: and(
+        eq(rolePermissions.roleId, roleId),
+        eq(rolePermissions.permissionKey, permissionKey),
+      ),
+      columns: { scope: true },
+    });
+
+    return row?.scope ?? null;
+  }
+
   async getRolePermissions({
     roleId,
   }: {
@@ -24,10 +42,9 @@ export class DrizzleRolePermissionRepository
       where: eq(rolePermissions.roleId, roleId),
     });
 
-    return permissions.reduce<Record<string, GrantedPermissionValue>>(
-      (prev, curr) => ({ ...prev, [curr.permissionKey]: curr.scope }),
-      {},
-    );
+    const out: Record<string, GrantedPermissionValue> = {};
+    for (const p of permissions) out[p.permissionKey] = p.scope;
+    return out;
   }
 
   async setRolePermission(data: {
@@ -42,11 +59,19 @@ export class DrizzleRolePermissionRepository
 
     if (data.value === "none") {
       await this.db.delete(rolePermissions).where(condition);
-    } else {
-      await this.db
-        .update(rolePermissions)
-        .set({ scope: data.value })
-        .where(condition);
+      return;
     }
+
+    await this.db
+      .insert(rolePermissions)
+      .values({
+        roleId: data.roleId,
+        permissionKey: data.permissionKey,
+        scope: data.value, // "own" | "all"
+      })
+      .onConflictDoUpdate({
+        target: [rolePermissions.roleId, rolePermissions.permissionKey],
+        set: { scope: data.value },
+      });
   }
 }

@@ -5,7 +5,7 @@ import type { PasswordHasher } from "../ports/password-hasher.port";
 import type { TokenService } from "../ports/token-service.port";
 import type { UserRepository } from "../repositories/user.repository";
 
-export class AuthService {
+export class AuthenticationService {
   constructor(
     private readonly userRepository: UserRepository,
     private readonly tokenService: TokenService,

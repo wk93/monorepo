@@ -65,6 +65,9 @@ export const userRoles = pgTable(
       .references(() => roles.id, { onDelete: "cascade" }),
   },
   (t) => [
+    primaryKey({ columns: [t.userId] }),
+    index("user_roles_role_id_idx").on(t.roleId),
+    /* multi tenant
     primaryKey({
       columns: [
         t.userId,
@@ -72,6 +75,7 @@ export const userRoles = pgTable(
         t.roleId,
       ],
     }),
-    // index("user_roles_user_tenant_idx").on(t.userId, t.tenantId), uncomment for multi-tenant
+    index("user_roles_user_tenant_idx").on(t.userId, t.tenantId), uncomment for multi-tenant
+    */
   ],
 );

@@ -9,7 +9,10 @@ export interface HonoEnv {
 }
 
 export interface AuthVariables extends Variables {
-  auth: { sub: string };
+  auth: {
+    userId: string;
+    roleId: string | null;
+  };
 }
 
 export interface AuthHonoEnv {

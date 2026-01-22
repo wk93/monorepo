@@ -5,6 +5,7 @@ import { UserPublicSchema } from "@mono/contracts/user";
 
 import { zValidator } from "./adapters/z-app-validator";
 import { authMiddleware } from "./middlewares/auth.middleware";
+import { requirePermission } from "./middlewares/permission.middleware";
 import type { AuthHonoEnv } from "./types";
 
 export const routes = new Hono<AuthHonoEnv>()
@@ -27,13 +28,21 @@ export const routes = new Hono<AuthHonoEnv>()
     }
   })
   .get("/me", authMiddleware, async (c) => {
-    const { sub } = c.get("auth");
+    const { userId } = c.get("auth");
     const { userService } = c.get("services");
 
-    const result = await userService.getProfile(sub);
+    const result = await userService.getProfile(userId);
     if (result.ok) {
       return c.json(UserPublicSchema.parse(result.value), 200);
     } else {
       return c.json(result.error, 401);
     }
-  });
+  })
+  .get(
+    "/admin/users",
+    authMiddleware,
+    requirePermission("users.read", "own"),
+    (c) => {
+      return c.json({ ok: true });
+    },
+  );
