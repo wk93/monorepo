@@ -1,4 +1,4 @@
-import { AuthService } from "@mono/core/services/auth.service";
+import { AuthenticationService } from "@mono/core";
 import { AuthorizationService } from "@mono/core/services/authorization.service";
 import { UserService } from "@mono/core/services/user.service";
 import {
@@ -25,7 +25,7 @@ export function buildServices(env: Env) {
   const tokenService = new JwtTokenService(env.JWT_SECRET);
 
   // services
-  const authService = new AuthService(
+  const authenticationService = new AuthenticationService(
     userRepository,
     tokenService,
     passwordHasher,
@@ -39,7 +39,7 @@ export function buildServices(env: Env) {
 
   return {
     db,
-    authService,
+    authenticationService,
     authorizationService,
     userService,
     tokenService,

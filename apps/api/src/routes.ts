@@ -14,10 +14,10 @@ export const routes = new Hono<AuthHonoEnv>()
   })
   .post("/auth/login", zValidator("json", LoginInputSchema), async (c) => {
     const input = c.req.valid("json");
-    const { authService } = c.get("services");
+    const { authenticationService } = c.get("services");
 
     try {
-      const result = await authService.login(input);
+      const result = await authenticationService.login(input);
       if (result.ok) {
         return c.json(LoginResponseSchema.parse(result.value), 200);
       } else {
