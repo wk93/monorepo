@@ -5,8 +5,8 @@
     "DATABASE_URL",
     "JWT_SECRET",
     "NODE_ENV",
-    "ADMIN_EMAIL",
-    "ADMIN_PASSWORD"
+    "ROOT_EMAIL",
+    "ROOT_PASSWORD"
   ],
   "tasks": {
     "build": {
