@@ -1,4 +1,14 @@
-import type { RoleEntity } from "../entities/role.entity";
-import type { Crud } from "./crud.repository";
+export interface InitRoles {
+  root: {
+    name: string;
+    description: string | null;
+    hasFullAccess: true;
+  };
+}
 
-export type RoleRepository = Crud<RoleEntity>;
+export interface RoleRepository {
+  init(data: InitRoles): Promise<{ rootRoleId: string }>;
+  getFlags(data: {
+    roleId: string;
+  }): Promise<{ hasFullAccess: boolean } | null>;
+}

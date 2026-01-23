@@ -13,17 +13,26 @@ import { usersTable } from "../schema/users";
 export class DrizzleUserRepository implements UserRepository {
   constructor(private readonly db: PostgresJsDatabase<Schema>) {}
 
-  async init({ admin }: InitProps): Promise<void> {
-    const count = await this.db.$count(usersTable);
-    if (count === 0) {
-      await this.db.insert(usersTable).values({
+  async init({ admin }: InitProps): Promise<{ adminId: string }> {
+    const existing = await this.findByEmail(admin.email);
+    if (existing) return { adminId: existing.id };
+
+    const inserted = await this.db
+      .insert(usersTable)
+      .values({
         email: admin.email,
-        password: admin.hashedPassword,
+        password: admin.passwordHash,
         type: "admin",
         isActive: true,
-      });
-      console.info(`Admin ${admin.email} created`);
-    }
+      })
+      .onConflictDoNothing({ target: usersTable.email })
+      .returning({ id: usersTable.id });
+
+    const adminId =
+      inserted[0]?.id ?? (await this.findByEmail(admin.email))?.id ?? null;
+    if (!adminId) throw new Error("No admin");
+
+    return { adminId };
   }
 
   async findByEmail(email: string): Promise<UserEntity | null> {

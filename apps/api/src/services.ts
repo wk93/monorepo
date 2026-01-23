@@ -4,6 +4,7 @@ import { UserService } from "@mono/core/services/user.service";
 import {
   DrizzlePermissionCatalogRepository,
   DrizzleRolePermissionRepository,
+  DrizzleRoleRepository,
   DrizzleUserRepository,
   DrizzleUserRoleRepository,
 } from "@mono/drizzle";
@@ -18,6 +19,7 @@ export async function buildServices(env: Env) {
 
   // repos
   const userRepository = new DrizzleUserRepository(db);
+  const roleRepository = new DrizzleRoleRepository(db);
   const userRoleRepository = new DrizzleUserRoleRepository(db);
   const rolePermissionRepository = new DrizzleRolePermissionRepository(db);
   const permissionCatalogRepository = new DrizzlePermissionCatalogRepository(
@@ -40,14 +42,26 @@ export async function buildServices(env: Env) {
   );
 
   // seed admin
-  await userRepository.init({
+  const { adminId } = await userRepository.init({
     admin: {
       email: env.ADMIN_EMAIL,
-      hashedPassword: await passwordHasher.hash({
+      passwordHash: await passwordHasher.hash({
         password: env.ADMIN_PASSWORD,
       }),
     },
   });
+
+  // init root role
+  const { rootRoleId } = await roleRepository.init({
+    root: {
+      name: "Root",
+      description: "System root role",
+      hasFullAccess: true,
+    },
+  });
+
+  // assign admin to root role
+  await userRoleRepository.setUserRole({ userId: adminId, roleId: rootRoleId });
 
   // seed/sync permission keys
   await permissionCatalogRepository.init({
