@@ -24,9 +24,6 @@ function makeDeps(
   const token = overrides?.token ?? "token_123";
 
   const users: UserRepository = {
-    async init() {
-      return;
-    },
     async findByEmail(email: string) {
       return email === userByEmail?.email ? userByEmail : null;
     },

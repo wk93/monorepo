@@ -6,9 +6,6 @@ import { UserService } from "../src/services/user.service";
 describe("core/UserService.getProfile", () => {
   test("throws NOT_FOUND when user does not exist", async () => {
     const users: UserRepository = {
-      async init() {
-        return;
-      },
       async findByEmail() {
         return null;
       },
@@ -30,9 +27,6 @@ describe("core/UserService.getProfile", () => {
 
   test("returns public user DTO with ISO createdAt", async () => {
     const users: UserRepository = {
-      async init() {
-        return;
-      },
       async findByEmail() {
         return null;
       },

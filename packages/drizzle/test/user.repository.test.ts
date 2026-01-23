@@ -59,7 +59,6 @@ describe("drizzle/DrizzleUserRepository (pglite)", () => {
         id: "00000000-0000-0000-0000-000000000010",
         email: "dup@example.com",
         password: "hash",
-        type: "user",
         isActive: true,
       })
       .execute();
@@ -71,7 +70,6 @@ describe("drizzle/DrizzleUserRepository (pglite)", () => {
           id: "00000000-0000-0000-0000-000000000011",
           email: "dup@example.com",
           password: "hash2",
-          type: "user",
           isActive: true,
         })
         .execute(),
@@ -98,7 +96,6 @@ describe("drizzle/DrizzleUserRepository (pglite)", () => {
         id: "00000000-0000-0000-0000-000000000001",
         email: "user@example.com",
         password: "hash",
-        type: "user",
         isActive: true,
       })
       .execute();
@@ -124,7 +121,6 @@ describe("drizzle/DrizzleUserRepository (pglite)", () => {
         id: "00000000-0000-0000-0000-000000000002",
         email: "admin@example.com",
         password: "hash2",
-        type: "admin",
         isActive: false,
       })
       .execute();
