@@ -35,7 +35,7 @@ export function buildServices(env: Env) {
     rolePermissionRepository,
   );
 
-  const userService = new UserService(userRepository);
+  const userService = new UserService(userRepository, passwordHasher);
 
   return {
     db,
