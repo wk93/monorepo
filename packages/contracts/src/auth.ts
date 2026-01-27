@@ -7,19 +7,8 @@ export const LoginInputSchema = z.object({
 
 export type LoginInput = z.infer<typeof LoginInputSchema>;
 
-export const AuthTokensSchema = z.object({
-  accessToken: z.string().min(1),
-});
-
-export type AuthTokens = z.infer<typeof AuthTokensSchema>;
-
 export const LoginResponseSchema = z.object({
-  user: z.object({
-    id: z.string().min(1),
-    email: z.email(),
-    name: z.string().min(1).nullable(),
-  }),
-  tokens: AuthTokensSchema,
+  accessToken: z.string().min(1),
 });
 
 export type LoginResponse = z.infer<typeof LoginResponseSchema>;

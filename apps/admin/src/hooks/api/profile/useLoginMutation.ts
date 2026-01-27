@@ -27,7 +27,7 @@ export const useLoginMutation = () => {
 
     onSuccess: async (data) => {
       if (data) {
-        setToken(data.tokens.accessToken);
+        setToken(data.accessToken);
         queryClient.clear();
         await queryClient.invalidateQueries();
         await navigate({ to: "/" });

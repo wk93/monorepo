@@ -1,5 +1,3 @@
-import type { LoginInput, LoginResponse } from "@mono/contracts/auth";
-
 import type { Result } from "../entities/basic.entity";
 import type { PasswordHasher } from "../ports/password-hasher.port";
 import type { TokenService } from "../ports/token-service.port";
@@ -12,7 +10,10 @@ export class AuthenticationService {
     private readonly hasher: PasswordHasher,
   ) {}
 
-  async login(input: LoginInput): Promise<Result<LoginResponse>> {
+  async login(input: {
+    email: string;
+    password: string;
+  }): Promise<Result<{ accessToken: string }>> {
     const user = await this.userRepository.findByEmail(input.email);
     if (!user) {
       return {
@@ -39,8 +40,7 @@ export class AuthenticationService {
     return {
       ok: true,
       value: {
-        user: { id: user.id, email: user.email, name: user.name },
-        tokens: { accessToken },
+        accessToken,
       },
     };
   }
