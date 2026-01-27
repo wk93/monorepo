@@ -30,9 +30,5 @@
   },
   "peerDependencies": {
     "typescript": "^5"
-  },
-  "dependencies": {
-    "@mono/contracts": "workspace:*",
-    "hono": "^4.11.4"
   }
 }

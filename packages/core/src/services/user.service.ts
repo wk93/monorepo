@@ -1,13 +1,19 @@
-import type { UserPublic } from "@mono/contracts/user";
-
 import type { Result } from "../entities/basic.entity";
 import type { UserRepository } from "../repositories/user.repository";
+
+export interface GetProfileResponse {
+  id: string;
+  email: string;
+  name: string | null;
+  createdAt: string;
+}
 
 export class UserService {
   constructor(private readonly userRepository: UserRepository) {}
 
-  async getProfile(userId: string): Promise<Result<UserPublic>> {
+  async getProfile(userId: string): Promise<Result<GetProfileResponse>> {
     const user = await this.userRepository.findById(userId);
+
     if (!user) {
       return {
         ok: false,

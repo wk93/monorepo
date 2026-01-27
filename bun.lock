@@ -106,10 +106,6 @@
     },
     "packages/core": {
       "name": "@mono/core",
-      "dependencies": {
-        "@mono/contracts": "workspace:*",
-        "hono": "^4.11.4",
-      },
       "devDependencies": {
         "@mono/tsconfig": "workspace:*",
       },
