@@ -3,7 +3,7 @@ import { createFileRoute } from "@tanstack/react-router";
 
 import Button from "@/components/form/Button";
 import Input from "@/components/form/Input";
-import { useHelloQuery } from "@/hooks/api/hello";
+import Logo from "@/components/layout/Logo";
 import { useLoginMutation } from "@/hooks/api/profile/useLoginMutation";
 
 export const Route = createFileRoute("/login")({
@@ -20,7 +20,6 @@ function RouteComponent() {
     },
   });
 
-  const helloQuery = useHelloQuery();
   return (
     <div className="w-screen h-screen bg-primary-800 flex items-center justify-center">
       <div className="border border-gray-300 w-full max-w-md bg-white rounded-lg p-4">
@@ -32,20 +31,14 @@ function RouteComponent() {
             await form.handleSubmit();
           }}
         >
-          <div className="text-center">
-            {helloQuery.isLoading ? (
-              <div>Wczytywanie</div>
-            ) : helloQuery.data ? (
-              <div>{helloQuery.data.message}</div>
-            ) : (
-              <div>Hello "/"!</div>
-            )}
+          <div className="flex items-center justify-center mb-8">
+            <Logo className="size-20" />
           </div>
 
           <form.Field name="email">
             {(field) => (
               <Input
-                placeholder="email"
+                placeholder="Adres email"
                 name={field.name}
                 value={field.state.value}
                 onBlur={field.handleBlur}
@@ -59,7 +52,7 @@ function RouteComponent() {
           <form.Field name="password">
             {(field) => (
               <Input
-                placeholder="hasło"
+                placeholder="Hasło"
                 type="password"
                 name={field.name}
                 value={field.state.value}
