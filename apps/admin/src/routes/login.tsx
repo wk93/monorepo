@@ -64,7 +64,9 @@ function RouteComponent() {
             )}
           </form.Field>
 
-          <Button type="submit">Zaloguj się</Button>
+          <Button type="submit" isLoading={loginMutation.isPending}>
+            Zaloguj się
+          </Button>
         </form>
       </div>
     </div>
