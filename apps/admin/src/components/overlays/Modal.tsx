@@ -5,13 +5,13 @@ import {
   DialogTitle,
 } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
-import { type PropsWithChildren, type RefObject } from "react";
+import type { PropsWithChildren, RefObject } from "react";
 
 interface ModalProps extends PropsWithChildren {
   title?: string;
   isOpen: boolean;
   setIsOpen: (v: boolean) => void;
-  initialFocusRef?: RefObject<HTMLElement>;
+  initialFocusRef?: RefObject<HTMLElement | null>;
 }
 
 const Modal = ({
@@ -24,10 +24,8 @@ const Modal = ({
   return (
     <Dialog
       open={isOpen}
-      onClose={() => {
-        setIsOpen(false);
-      }}
-      initialFocus={initialFocusRef}
+      onClose={setIsOpen}
+      {...(initialFocusRef ? { initialFocus: initialFocusRef } : {})}
       transition
       className="fixed inset-0 z-50"
     >
@@ -44,16 +42,12 @@ const Modal = ({
           >
             {title && (
               <div className="flex items-start justify-between gap-4 px-4 pt-4 sm:px-6 sm:pt-6">
-                {title ? (
-                  <DialogTitle
-                    as="h3"
-                    className="text-base font-semibold text-gray-900"
-                  >
-                    {title}
-                  </DialogTitle>
-                ) : (
-                  <span />
-                )}
+                <DialogTitle
+                  as="h3"
+                  className="text-base font-semibold text-gray-900"
+                >
+                  {title}
+                </DialogTitle>
 
                 <button
                   type="button"
