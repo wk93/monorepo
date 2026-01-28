@@ -4,6 +4,7 @@
   "scripts": {
     "dev": "concurrently -n TYPES,API -c auto \"tsc -p tsconfig.types.json --watch --preserveWatchOutput\" \"bun run --hot --no-clear-screen src/index.ts\"",
     "build": "tsc -p tsconfig.types.json",
+    "clean": "rm -rf dist",
     "start": "bun run src/index.ts",
     "typecheck": "tsc -b --pretty false",
     "lint": "bun run typecheck && eslint .",
