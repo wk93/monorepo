@@ -2,7 +2,7 @@ import { zValidator as zv } from "@hono/zod-validator";
 import type { ValidationTargets } from "hono";
 import type { ZodType } from "zod";
 
-import type { AppError } from "@mono/core/entities/basic.entity";
+import type { AppError } from "@mono/core";
 
 export const zValidator = <
   T extends ZodType,
