@@ -1,9 +1,9 @@
 import { useForm } from "@tanstack/react-form";
 import { createFileRoute } from "@tanstack/react-router";
 
+import Logo from "@/components/brand/Logo";
 import Button from "@/components/form/Button";
 import Input from "@/components/form/Input";
-import Logo from "@/components/layout/Logo";
 import { useLoginMutation } from "@/hooks/api/profile/useLoginMutation";
 
 export const Route = createFileRoute("/login")({

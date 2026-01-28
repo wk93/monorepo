@@ -11,7 +11,7 @@ import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import clsx from "clsx";
 import type { PropsWithChildren } from "react";
 
-import Logo from "./Logo";
+import Logo from "../brand/Logo";
 
 import { useAuthStore } from "@/store/auth.store";
 
