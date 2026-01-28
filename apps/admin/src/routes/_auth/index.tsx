@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 
+import AuthLayout from "@/components/layout/AuthLayout";
 import { useHelloQuery } from "@/hooks/api/hello";
 import { useProfileQuery } from "@/hooks/api/profile/useProfileQuery";
 
@@ -12,7 +13,7 @@ function RouteComponent() {
 
   const helloQuery = useHelloQuery();
   return (
-    <>
+    <AuthLayout title="Dashboard">
       {helloQuery.isLoading ? (
         <div>Wczytywanie</div>
       ) : helloQuery.data ? (
@@ -21,6 +22,6 @@ function RouteComponent() {
         <div>Hello "/"!</div>
       )}
       <pre>{JSON.stringify(profile.data, null, 4)}</pre>
-    </>
+    </AuthLayout>
   );
 }
