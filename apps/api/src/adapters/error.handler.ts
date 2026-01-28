@@ -2,7 +2,7 @@ import type { ContentfulStatusCode } from "hono/utils/http-status";
 
 import type { Context } from "hono";
 
-import type { AppError, AppErrorCode, Err } from "@mono/core";
+import type { AppError, AppErrorCode } from "@mono/core";
 
 type ThrownAppError = AppError & { status?: number };
 
@@ -45,30 +45,27 @@ function statusFromCode(code: AppErrorCode): number {
 }
 
 export function handleError(err: unknown, c: Context) {
+  console.error(err);
   if (isAppError(err)) {
     const status =
       typeof err.status === "number" && err.status >= 400 && err.status <= 599
         ? err.status
         : statusFromCode(err.code);
 
-    const payload: Err = {
-      ok: false,
-      error: {
+    return c.json(
+      {
         code: err.code,
         message: err.message,
       },
-    };
-
-    return c.json(payload, status as ContentfulStatusCode);
+      status as ContentfulStatusCode,
+    );
   }
 
-  const payload: Err = {
-    ok: false,
-    error: {
+  return c.json(
+    {
       code: "INTERNAL",
       message: "Internal error",
     },
-  };
-
-  return c.json(payload, 500);
+    500,
+  );
 }

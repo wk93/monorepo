@@ -14,24 +14,22 @@ export const routes = new Hono<AuthHonoEnv>()
   })
   .post("/auth/login", zValidator("json", LoginInputSchema), async (c) => {
     const input = c.req.valid("json");
-    const { authenticationService } = c.get("services");
 
-    try {
-      const result = await authenticationService.login(input);
-      if (result.ok) {
-        return c.json(LoginResponseSchema.parse(result.value), 200);
-      } else {
-        return c.json(result.error, 401);
-      }
-    } catch (error) {
-      return c.json(error, 401);
+    const { authenticationService } = c.get("services");
+    const result = await authenticationService.login(input);
+
+    if (result.ok) {
+      return c.json(LoginResponseSchema.parse(result.value), 200);
+    } else {
+      return c.json(result.error, 401);
     }
   })
   .get("/me", authMiddleware, async (c) => {
     const { userId } = c.get("auth");
-    const { userService } = c.get("services");
 
+    const { userService } = c.get("services");
     const result = await userService.getProfile(userId);
+
     if (result.ok) {
       return c.json(UserPublicSchema.parse(result.value), 200);
     } else {
