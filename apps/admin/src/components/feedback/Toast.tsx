@@ -13,7 +13,12 @@ interface Props {
   duration?: number;
 }
 
-const toast = ({ type = "success", title, message, duration }: Props = {}) => {
+const toast = ({
+  type = "success",
+  title,
+  message,
+  duration = 2000,
+}: Props = {}) => {
   const Icon =
     type === "success"
       ? CheckIcon
@@ -46,7 +51,7 @@ const toast = ({ type = "success", title, message, duration }: Props = {}) => {
         <div className="flex-1 w-0 p-1 flex items-center">
           <div className="flex-1">
             <p className="text-sm font-medium text-gray-700">
-              {title || message}
+              {title ?? message}
             </p>
             {message && title && (
               <p
@@ -59,7 +64,9 @@ const toast = ({ type = "success", title, message, duration }: Props = {}) => {
         </div>
         <div className="flex border-l border-gray-200">
           <button
-            onClick={() => hotT.remove(t.id)}
+            onClick={() => {
+              hotT.remove(t.id);
+            }}
             className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-center justify-center text-sm font-medium text-gray-600 hover:text-primary focus:outline-none focus:ring-2 focus:ring-primary cursor-pointer"
           >
             <XMarkIcon className="w-4 h-4" />
