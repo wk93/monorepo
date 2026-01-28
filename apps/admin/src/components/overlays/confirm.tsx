@@ -26,8 +26,11 @@ export function ConfirmProvider({ children }: PropsWithChildren) {
     onConfirm: null,
   });
 
-  const close = useCallback(() => {
-    setState((s) => ({ ...s, isOpen: false, onConfirm: null, message: "" }));
+  const close = useCallback(async () => {
+    const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+    setState((s) => ({ ...s, isOpen: false, onConfirm: null }));
+    await sleep(300);
+    setState((s) => ({ ...s, message: "" }));
   }, []);
 
   const confirm = useCallback<ConfirmFn>((message, onConfirm) => {
@@ -47,8 +50,8 @@ export function ConfirmProvider({ children }: PropsWithChildren) {
       <Modal
         title="Potwierdź"
         isOpen={state.isOpen}
-        setIsOpen={(v) => {
-          if (!v) close();
+        setIsOpen={async (v) => {
+          if (!v) await close();
         }}
       >
         <div className="space-y-6">
@@ -66,9 +69,9 @@ export function ConfirmProvider({ children }: PropsWithChildren) {
             <button
               type="button"
               className="rounded-md bg-primary-600 px-3 py-2 text-sm font-semibold text-white hover:opacity-90"
-              onClick={() => {
+              onClick={async () => {
                 const cb = state.onConfirm;
-                close();
+                await close();
                 cb?.();
               }}
             >
