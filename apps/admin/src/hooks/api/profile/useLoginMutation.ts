@@ -3,8 +3,9 @@ import { useNavigate } from "@tanstack/react-router";
 
 import type { LoginInput } from "@mono/contracts/auth";
 
+import toast from "@/components/feedback/Toast";
 import { useAuthStore } from "@/store/auth.store";
-import client from "@/utils/client";
+import client, { HttpError, unwrapJson } from "@/utils/client";
 
 export const useLoginMutation = () => {
   const queryClient = useQueryClient();
@@ -13,25 +14,20 @@ export const useLoginMutation = () => {
   const setToken = useAuthStore((s) => s.setToken);
 
   return useMutation({
-    mutationFn: async (value: LoginInput) => {
-      const res = await client.auth.login.$post({ json: value });
-
-      if (!res.ok) {
-        const error = await res.json();
-        console.warn(error);
-        return null;
-      }
-
-      return res.json();
-    },
+    mutationFn: (value: LoginInput) =>
+      unwrapJson(client.auth.login.$post({ json: value })),
 
     onSuccess: async (data) => {
-      if (data) {
-        setToken(data.accessToken);
-        queryClient.clear();
-        await queryClient.invalidateQueries();
-        await navigate({ to: "/" });
+      setToken(data.accessToken);
+      await queryClient.invalidateQueries();
+      await navigate({ to: "/" });
+    },
+    onError: (err) => {
+      if (err instanceof HttpError) {
+        toast({ type: "error", title: err.message });
+        return;
       }
+      toast({ type: "error", title: "Niepoprawne logowanie" });
     },
   });
 };
