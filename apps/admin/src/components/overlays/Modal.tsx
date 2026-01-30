@@ -7,7 +7,7 @@ import {
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import type { PropsWithChildren, RefObject } from "react";
 
-interface ModalProps extends PropsWithChildren {
+export interface ModalProps extends PropsWithChildren {
   title?: string;
   isOpen: boolean;
   setIsOpen: (v: boolean) => void;
