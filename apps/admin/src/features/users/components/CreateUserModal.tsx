@@ -14,7 +14,7 @@ import Button from "@/components/form/Button";
 import Input from "@/components/form/Input";
 import type { ModalProps } from "@/components/overlays/Modal";
 import Modal from "@/components/overlays/Modal";
-import { useCreateUserMutation } from "@/features/api/useCreateUserMutation";
+import { useCreateUserMutation } from "@/features/users/api/useCreateUserMutation";
 import { getErrorMessage } from "@/utils/error-messages";
 
 export const CreateUserWithRepasswordSchema = CreateUserSchema.extend({
