@@ -1,7 +1,7 @@
 import { Hono } from "hono";
 
 import { LoginInputSchema, LoginResponseSchema } from "@mono/contracts/auth";
-import { UserPublicSchema } from "@mono/contracts/user";
+import { CreateUserSchema, UserPublicSchema } from "@mono/contracts/user";
 
 import { zValidator } from "./adapters/z-app-validator";
 import { authMiddleware } from "./middlewares/auth.middleware";
@@ -31,7 +31,11 @@ export const routes = new Hono<AuthHonoEnv>()
     const result = await userService.getProfile(userId);
 
     if (result.ok) {
-      return c.json(UserPublicSchema.parse(result.value), 200);
+      const value = {
+        ...result.value,
+        createdAt: result.value.createdAt.toISOString(),
+      };
+      return c.json(UserPublicSchema.parse(value), 200);
     } else {
       return c.json(result.error, 401);
     }
@@ -40,7 +44,41 @@ export const routes = new Hono<AuthHonoEnv>()
     "/admin/users",
     authMiddleware,
     requirePermission("users.read", "own"),
-    (c) => {
-      return c.json({ ok: true });
+    async (c) => {
+      const { userService } = c.get("services");
+      const result = await userService.list();
+      if (result.ok) {
+        const mappedUsers = result.value.map((user) =>
+          UserPublicSchema.parse({
+            ...user,
+            createdAt: user.createdAt.toISOString(),
+          }),
+        );
+        return c.json(mappedUsers, 200);
+      } else {
+        return c.json(result.error, 400);
+      }
+    },
+  )
+  .post(
+    "/admin/users",
+    authMiddleware,
+    requirePermission("users.create", "all"),
+    zValidator("json", CreateUserSchema),
+    async (c) => {
+      const input = c.req.valid("json");
+
+      const { userService } = c.get("services");
+      const result = await userService.create(input);
+
+      if (result.ok) {
+        const value = {
+          ...result.value,
+          createdAt: result.value.createdAt.toISOString(),
+        };
+        return c.json(UserPublicSchema.parse(value), 200);
+      } else {
+        return c.json(result.error, 400);
+      }
     },
   );

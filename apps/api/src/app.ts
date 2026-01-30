@@ -21,7 +21,10 @@ await bootstrap({
     email: env.ROOT_EMAIL,
     password: env.ROOT_PASSWORD,
   },
-  permissions: [{ key: "users.read", category: "Users", label: "Read users" }],
+  permissions: [
+    { key: "users.read", category: "Users", label: "Read users" },
+    { key: "users.create", category: "Users", label: "Create users" },
+  ],
 });
 
 export const apiApp = new Hono<HonoEnv>()

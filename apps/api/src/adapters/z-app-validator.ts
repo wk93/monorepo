@@ -5,11 +5,11 @@ import type { ZodType } from "zod";
 import type { AppError } from "@mono/core";
 
 export const zValidator = <
-  T extends ZodType,
-  Target extends keyof ValidationTargets,
+  TTarget extends keyof ValidationTargets,
+  TSchema extends ZodType,
 >(
-  target: Target,
-  schema: T,
+  target: TTarget,
+  schema: TSchema,
 ) =>
   zv(target, schema, (result, c) => {
     if (!result.success) {

@@ -3,13 +3,6 @@ import type { PasswordHasher } from "../ports";
 import type { UserRepository } from "../repositories/user.repository";
 import { err, ok, type Result } from "../shared";
 
-export interface GetProfileResponse {
-  id: string;
-  email: string;
-  name: string | null;
-  createdAt: string;
-}
-
 export class UserService {
   constructor(
     private readonly userRepository: UserRepository,
@@ -37,7 +30,7 @@ export class UserService {
     }
   }
 
-  async getProfile(userId: string): Promise<Result<GetProfileResponse>> {
+  async getProfile(userId: string): Promise<Result<UserEntity>> {
     try {
       const user = await this.userRepository.findById(userId);
 
@@ -45,12 +38,17 @@ export class UserService {
         return err("NOT_FOUND", "User not found");
       }
 
-      return ok({
-        id: user.id,
-        email: user.email,
-        name: user.name,
-        createdAt: user.createdAt.toISOString(),
-      });
+      return ok(user);
+    } catch {
+      return err("INTERNAL", "Database error");
+    }
+  }
+
+  async list(): Promise<Result<UserEntity[]>> {
+    try {
+      const users = await this.userRepository.list();
+
+      return ok(users);
     } catch {
       return err("INTERNAL", "Database error");
     }

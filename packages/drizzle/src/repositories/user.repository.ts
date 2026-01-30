@@ -1,6 +1,7 @@
 import { eq } from "drizzle-orm";
 import type { PostgresJsDatabase } from "drizzle-orm/postgres-js";
 
+import type { UserEntity } from "@mono/core";
 import type { UserRepository } from "@mono/core/repositories/user.repository";
 
 import type { Schema } from "../db/pg";
@@ -51,6 +52,18 @@ export class DrizzleUserRepository implements UserRepository {
     };
   }
 
+  async list(): Promise<UserEntity[]> {
+    const users = await this.db.query.usersTable.findMany({
+      columns: {
+        id: true,
+        email: true,
+        createdAt: true,
+      },
+    });
+
+    return users;
+  }
+
   async create({
     email,
     passwordHash,
@@ -78,7 +91,6 @@ export class DrizzleUserRepository implements UserRepository {
 
     return {
       id: user.id,
-      name: null,
       email: user.email,
       createdAt: user.createdAt,
     };

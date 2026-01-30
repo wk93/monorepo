@@ -5,7 +5,6 @@ import { Email, Password, RequiredString } from "./basic";
 export const UserPublicSchema = z.object({
   id: RequiredString,
   email: Email,
-  name: RequiredString.nullable(),
   createdAt: z.iso.datetime(),
 });
 
@@ -15,3 +14,4 @@ export const CreateUserSchema = z.object({
   email: Email,
   password: Password,
 });
+export type CreateUserSchema = z.infer<typeof CreateUserSchema>;
