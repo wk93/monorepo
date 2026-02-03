@@ -12,7 +12,9 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as AuthRouteImport } from './routes/_auth'
 import { Route as AuthIndexRouteImport } from './routes/_auth/index'
-import { Route as AuthUsersIndexRouteImport } from './routes/_auth/users/index'
+import { Route as AuthSettingsIndexRouteImport } from './routes/_auth/settings/index'
+import { Route as AuthSettingsUsersRouteImport } from './routes/_auth/settings/users'
+import { Route as AuthSettingsPermissionsRouteImport } from './routes/_auth/settings/permissions'
 
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
@@ -28,35 +30,63 @@ const AuthIndexRoute = AuthIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AuthRoute,
 } as any)
-const AuthUsersIndexRoute = AuthUsersIndexRouteImport.update({
-  id: '/users/',
-  path: '/users/',
+const AuthSettingsIndexRoute = AuthSettingsIndexRouteImport.update({
+  id: '/settings/',
+  path: '/settings/',
+  getParentRoute: () => AuthRoute,
+} as any)
+const AuthSettingsUsersRoute = AuthSettingsUsersRouteImport.update({
+  id: '/settings/users',
+  path: '/settings/users',
+  getParentRoute: () => AuthRoute,
+} as any)
+const AuthSettingsPermissionsRoute = AuthSettingsPermissionsRouteImport.update({
+  id: '/settings/permissions',
+  path: '/settings/permissions',
   getParentRoute: () => AuthRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof AuthIndexRoute
   '/login': typeof LoginRoute
-  '/users/': typeof AuthUsersIndexRoute
+  '/settings/permissions': typeof AuthSettingsPermissionsRoute
+  '/settings/users': typeof AuthSettingsUsersRoute
+  '/settings/': typeof AuthSettingsIndexRoute
 }
 export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/': typeof AuthIndexRoute
-  '/users': typeof AuthUsersIndexRoute
+  '/settings/permissions': typeof AuthSettingsPermissionsRoute
+  '/settings/users': typeof AuthSettingsUsersRoute
+  '/settings': typeof AuthSettingsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_auth': typeof AuthRouteWithChildren
   '/login': typeof LoginRoute
   '/_auth/': typeof AuthIndexRoute
-  '/_auth/users/': typeof AuthUsersIndexRoute
+  '/_auth/settings/permissions': typeof AuthSettingsPermissionsRoute
+  '/_auth/settings/users': typeof AuthSettingsUsersRoute
+  '/_auth/settings/': typeof AuthSettingsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/login' | '/users/'
+  fullPaths:
+    | '/'
+    | '/login'
+    | '/settings/permissions'
+    | '/settings/users'
+    | '/settings/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/login' | '/' | '/users'
-  id: '__root__' | '/_auth' | '/login' | '/_auth/' | '/_auth/users/'
+  to: '/login' | '/' | '/settings/permissions' | '/settings/users' | '/settings'
+  id:
+    | '__root__'
+    | '/_auth'
+    | '/login'
+    | '/_auth/'
+    | '/_auth/settings/permissions'
+    | '/_auth/settings/users'
+    | '/_auth/settings/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -87,11 +117,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthIndexRouteImport
       parentRoute: typeof AuthRoute
     }
-    '/_auth/users/': {
-      id: '/_auth/users/'
-      path: '/users'
-      fullPath: '/users/'
-      preLoaderRoute: typeof AuthUsersIndexRouteImport
+    '/_auth/settings/': {
+      id: '/_auth/settings/'
+      path: '/settings'
+      fullPath: '/settings/'
+      preLoaderRoute: typeof AuthSettingsIndexRouteImport
+      parentRoute: typeof AuthRoute
+    }
+    '/_auth/settings/users': {
+      id: '/_auth/settings/users'
+      path: '/settings/users'
+      fullPath: '/settings/users'
+      preLoaderRoute: typeof AuthSettingsUsersRouteImport
+      parentRoute: typeof AuthRoute
+    }
+    '/_auth/settings/permissions': {
+      id: '/_auth/settings/permissions'
+      path: '/settings/permissions'
+      fullPath: '/settings/permissions'
+      preLoaderRoute: typeof AuthSettingsPermissionsRouteImport
       parentRoute: typeof AuthRoute
     }
   }
@@ -99,12 +143,16 @@ declare module '@tanstack/react-router' {
 
 interface AuthRouteChildren {
   AuthIndexRoute: typeof AuthIndexRoute
-  AuthUsersIndexRoute: typeof AuthUsersIndexRoute
+  AuthSettingsPermissionsRoute: typeof AuthSettingsPermissionsRoute
+  AuthSettingsUsersRoute: typeof AuthSettingsUsersRoute
+  AuthSettingsIndexRoute: typeof AuthSettingsIndexRoute
 }
 
 const AuthRouteChildren: AuthRouteChildren = {
   AuthIndexRoute: AuthIndexRoute,
-  AuthUsersIndexRoute: AuthUsersIndexRoute,
+  AuthSettingsPermissionsRoute: AuthSettingsPermissionsRoute,
+  AuthSettingsUsersRoute: AuthSettingsUsersRoute,
+  AuthSettingsIndexRoute: AuthSettingsIndexRoute,
 }
 
 const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)

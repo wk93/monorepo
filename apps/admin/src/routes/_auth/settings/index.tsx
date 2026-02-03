@@ -16,7 +16,7 @@ import { useConfirm } from "@/components/overlays/confirm";
 import { type UserListItem, useUsersQuery } from "@/features/users/api";
 import CreateUserModal from "@/features/users/components/CreateUserModal";
 
-export const Route = createFileRoute("/_auth/users/")({
+export const Route = createFileRoute("/_auth/settings/")({
   component: RouteComponent,
 });
 
@@ -60,7 +60,7 @@ function RouteComponent() {
 
   return (
     <AuthLayout
-      title="Użytkownicy"
+      title="Ustawienia"
       actions={
         <div className="flex shrink-0 gap-2">
           <Button
