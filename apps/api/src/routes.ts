@@ -64,7 +64,7 @@ export const routes = new Hono<AuthHonoEnv>()
   .post(
     "/admin/users",
     authMiddleware,
-    requirePermission("users.create", "all"),
+    requirePermission("users.write", "all"),
     zValidator("json", CreateUserSchema),
     async (c) => {
       const input = c.req.valid("json");
