@@ -32,7 +32,11 @@ export const CreateUserWithRepasswordSchema = CreateUserSchema.extend({
 
 const CreateUserModal: React.FC<Props> = ({ ...props }) => {
   const firstInputRef = useRef<HTMLInputElement>(null);
-  const { isPending, mutateAsync } = useCreateUserMutation();
+  const { isPending, mutateAsync } = useCreateUserMutation({
+    onSuccess: () => {
+      props.setIsOpen(false);
+    },
+  });
 
   const form = useForm({
     defaultValues: {
@@ -42,7 +46,6 @@ const CreateUserModal: React.FC<Props> = ({ ...props }) => {
     },
     onSubmit: async ({ value }) => {
       const data = await mutateAsync(value);
-      setIsOpen(false);
       if (data) {
         toast({
           title: "Użytkownik został utworzony!",

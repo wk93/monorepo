@@ -5,7 +5,11 @@ import type { CreateUserSchema } from "@mono/contracts";
 import toast from "@/components/feedback/Toast";
 import client from "@/utils/client";
 
-export const useCreateUserMutation = () =>
+interface Props {
+  onSuccess?: () => void;
+}
+
+export const useCreateUserMutation = (props?: Props) =>
   useMutation({
     mutationFn: async (json: CreateUserSchema) => {
       const res = await client.admin.users.$post({
@@ -14,6 +18,7 @@ export const useCreateUserMutation = () =>
 
       if (res.ok) {
         const data = await res.json();
+        props?.onSuccess?.();
         return data;
       } else {
         const data = await res.json();
