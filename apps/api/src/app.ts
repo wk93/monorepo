@@ -24,6 +24,7 @@ await bootstrap({
   permissions: [
     { key: "users.read", category: "Users", label: "Read users" },
     { key: "users.create", category: "Users", label: "Create users" },
+    { key: "roles.create", category: "Roles", label: "Read roles" },
   ],
 });
 

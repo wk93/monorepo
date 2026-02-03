@@ -4,6 +4,7 @@ import { LoginInputSchema, LoginResponseSchema } from "@mono/contracts/auth";
 import { CreateUserSchema, UserPublicSchema } from "@mono/contracts/user";
 
 import { zValidator } from "./adapters/z-app-validator";
+import { rolesApp } from "./apps/roles-app";
 import { authMiddleware } from "./middlewares/auth.middleware";
 import { requirePermission } from "./middlewares/permission.middleware";
 import type { AuthHonoEnv } from "./types";
@@ -81,4 +82,5 @@ export const routes = new Hono<AuthHonoEnv>()
         return c.json(result.error, 400);
       }
     },
-  );
+  )
+  .route("/admin/roles", rolesApp);

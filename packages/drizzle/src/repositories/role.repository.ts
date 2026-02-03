@@ -1,7 +1,7 @@
 import { eq } from "drizzle-orm";
 import type { PostgresJsDatabase } from "drizzle-orm/postgres-js";
 
-import type { RoleEntity, RoleRepository } from "@mono/core";
+import type { RoleEntity, RoleEntityWithId, RoleRepository } from "@mono/core";
 
 import type { Schema } from "../db/pg";
 import { roles } from "../schema/permissions";
@@ -23,11 +23,7 @@ export class DrizzleRoleRepository implements RoleRepository {
     return roles;
   }
 
-  async get({
-    id,
-  }: {
-    id: string;
-  }): Promise<(RoleEntity & { id: string }) | null> {
+  async findById(id: string): Promise<RoleEntityWithId | null> {
     const role = await this.db.query.roles.findFirst({
       where: eq(roles.id, id),
     });
@@ -39,7 +35,7 @@ export class DrizzleRoleRepository implements RoleRepository {
     return role;
   }
 
-  async create(data: RoleEntity): Promise<RoleEntity & { id: string }> {
+  async create(data: RoleEntity): Promise<RoleEntityWithId> {
     const insertedRows = await this.db
       .insert(roles)
       .values({
