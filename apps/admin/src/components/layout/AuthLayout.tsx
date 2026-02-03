@@ -8,7 +8,7 @@ import {
   MenuItems,
 } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
-import { Link, linkOptions } from "@tanstack/react-router";
+import { Link, linkOptions, useMatchRoute } from "@tanstack/react-router";
 import clsx from "clsx";
 import type { PropsWithChildren } from "react";
 
@@ -30,13 +30,26 @@ interface Props extends PropsWithChildren {
 
 const AuthLayout: React.FC<Props> = ({ title, children, actions }) => {
   const setToken = useAuthStore((s) => s.setToken);
+  const matchRoute = useMatchRoute();
+
   const navigation = linkOptions([
-    { name: "Dashboard", to: "/" },
-    { name: "Team", to: "/users" },
+    {
+      name: "Dashboard",
+      to: "/",
+      subitems: [],
+    },
+    {
+      name: "Ustawienia",
+      to: "/settings",
+      subitems: linkOptions([
+        { name: "Użytkownicy", to: "/settings/users" },
+        { name: "Uprawnienia", to: "/settings/permissions" },
+      ]),
+    },
   ]);
 
   const userNavigation = linkOptions([
-    { name: "Settings", to: "/", onClick: undefined },
+    { name: "Settings", to: "/settings", onClick: undefined },
     {
       name: "Sign out",
       to: "/login",
@@ -46,17 +59,28 @@ const AuthLayout: React.FC<Props> = ({ title, children, actions }) => {
     },
   ]);
 
+  const activeNavItem = navigation.find((item) =>
+    matchRoute({ to: item.to, fuzzy: true }),
+  );
+
+  const activeSubitems = activeNavItem?.subitems ?? [];
+
   return (
     <div className="h-screen flex flex-col">
       <div className="relative bg-primary-800 pb-32">
         <Disclosure as="nav" className="bg-primary-800">
           <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
-            <div className="border-b border-white/10">
+            <div
+              className={
+                activeSubitems.length === 0 ? "border-b border-white/10" : ""
+              }
+            >
               <div className="flex h-16 items-center justify-between px-4 sm:px-0">
                 <div className="flex items-center">
                   <div className="shrink-0">
                     <Logo className="size-12" />
                   </div>
+
                   <div className="hidden md:block">
                     <div className="pl-4 flex items-baseline space-x-4">
                       {navigation.map((item) => (
@@ -73,6 +97,7 @@ const AuthLayout: React.FC<Props> = ({ title, children, actions }) => {
                     </div>
                   </div>
                 </div>
+
                 <div className="hidden md:block">
                   <div className="ml-4 flex items-center md:ml-6">
                     <button
@@ -115,6 +140,7 @@ const AuthLayout: React.FC<Props> = ({ title, children, actions }) => {
                     </Menu>
                   </div>
                 </div>
+
                 <div className="-mr-2 flex md:hidden">
                   {/* Mobile menu button */}
                   <DisclosureButton className="group relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-white/5 hover:text-white focus:outline-2 focus:outline-offset-2 focus:outline-primary-500">
@@ -153,6 +179,7 @@ const AuthLayout: React.FC<Props> = ({ title, children, actions }) => {
                     </Link>
                   ))}
                 </div>
+
                 <div className="border-t border-white/10 pt-4 pb-3">
                   <div className="flex items-center px-5">
                     <div className="shrink-0">
@@ -179,6 +206,7 @@ const AuthLayout: React.FC<Props> = ({ title, children, actions }) => {
                       <BellIcon aria-hidden="true" className="size-6" />
                     </button>
                   </div>
+
                   <div className="mt-3 space-y-1 px-2">
                     {userNavigation.map((item) => (
                       <Link
@@ -199,6 +227,29 @@ const AuthLayout: React.FC<Props> = ({ title, children, actions }) => {
             )}
           </DisclosurePanel>
         </Disclosure>
+        {/* Secondary nav (tabs) – tylko dla /settings/* */}
+        {activeSubitems.length > 0 && (
+          <div className="bg-primary-900 py-2">
+            <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
+              <nav className="flex gap-2 overflow-x-auto">
+                {activeSubitems.map((s) => (
+                  <Link
+                    key={s.name}
+                    {...s}
+                    className={clsx(
+                      "whitespace-nowrap rounded-md px-3 py-2 text-sm font-medium",
+                      "text-white/80 hover:text-white hover:bg-white/5",
+                      "[.active]:bg-primary-950 [.active]:hover:bg-primary-950 [.active]:text-white",
+                    )}
+                  >
+                    {s.name}
+                  </Link>
+                ))}
+              </nav>
+            </div>
+          </div>
+        )}
+
         <header className="py-10">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="flex gap-8 items-center">
