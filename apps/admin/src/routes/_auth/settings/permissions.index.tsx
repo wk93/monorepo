@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   createColumnHelper,
   flexRender,
@@ -9,14 +9,13 @@ import clsx from "clsx";
 import { useMemo, useState } from "react";
 
 import LoadingIcon from "@/components/feedback/LoadingIcon";
-import toast from "@/components/feedback/Toast";
 import Button from "@/components/form/Button";
 import AuthLayout from "@/components/layout/AuthLayout";
 import { useConfirm } from "@/components/overlays/confirm";
 import { type RoleItem, useRolesQuery } from "@/features/roles/api";
 import CreateRoleModal from "@/features/roles/components/CreateRoleModal";
 
-export const Route = createFileRoute("/_auth/settings/permissions")({
+export const Route = createFileRoute("/_auth/settings/permissions/")({
   component: RouteComponent,
 });
 
@@ -33,7 +32,7 @@ function RouteComponent() {
         id: "info",
         cell: ({ row }) => (
           <div>
-            <strong>{row.original.name}</strong>
+            <strong className="text-gray-700">{row.original.name}</strong>
             <br />
             {row.original.description}
           </div>
@@ -42,17 +41,13 @@ function RouteComponent() {
       }),
       columnHelper.display({
         id: "actions",
-        cell: (props) => (
-          <Button
-            onClick={() => {
-              confirm("Czy na pewno chcesz aby wyskoczył toast?", () => {
-                // realne ID:
-                toast({ title: props.row.original.id });
-              });
-            }}
+        cell: ({ row }) => (
+          <Link
+            to="/settings/permissions/$roleId"
+            params={{ roleId: row.original.id }}
           >
-            Usuń
-          </Button>
+            <Button>Edytuj</Button>
+          </Link>
         ),
       }),
     ],
