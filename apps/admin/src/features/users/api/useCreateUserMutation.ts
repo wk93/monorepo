@@ -13,7 +13,7 @@ interface Props {
 
 export const useCreateUserMutation = (props?: Props) => {
   const queryClient = useQueryClient();
-  useMutation({
+  return useMutation({
     mutationFn: async (json: CreateUserSchema) => {
       const res = await client.admin.users.$post({
         json,
