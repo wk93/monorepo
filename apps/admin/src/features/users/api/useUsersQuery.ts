@@ -4,6 +4,10 @@ import { USERS_KEY } from ".";
 
 import client from "@/utils/client";
 
+export type UserListItem = NonNullable<
+  ReturnType<typeof useUsersQuery>["data"]
+>[number];
+
 export const useUsersQuery = () =>
   useQuery({
     queryKey: [USERS_KEY],
