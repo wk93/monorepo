@@ -58,7 +58,7 @@ const AuthLayout: React.FC<Props> = ({ title, children, actions }) => {
                     <Logo className="size-12" />
                   </div>
                   <div className="hidden md:block">
-                    <div className="ml-10 flex items-baseline space-x-4">
+                    <div className="pl-4 flex items-baseline space-x-4">
                       {navigation.map((item) => (
                         <Link
                           key={item.name}
