@@ -2,6 +2,7 @@ import { AuthenticationService, RoleService } from "@mono/core";
 import { AuthorizationService } from "@mono/core/services/authorization.service";
 import { UserService } from "@mono/core/services/user.service";
 import {
+  DrizzlePermissionCatalogRepository,
   DrizzleRolePermissionRepository,
   DrizzleRoleRepository,
   DrizzleUserRepository,
@@ -20,6 +21,9 @@ export function buildServices(env: Env) {
   const userRepository = new DrizzleUserRepository(db);
   const userRoleRepository = new DrizzleUserRoleRepository(db);
   const rolePermissionRepository = new DrizzleRolePermissionRepository(db);
+  const permissionCatalogRepository = new DrizzlePermissionCatalogRepository(
+    db,
+  );
   const roleRepository = new DrizzleRoleRepository(db);
 
   // ports/adapters
@@ -39,7 +43,10 @@ export function buildServices(env: Env) {
 
   const userService = new UserService(userRepository, passwordHasher);
 
-  const rolesService = new RoleService(roleRepository);
+  const roleService = new RoleService(
+    roleRepository,
+    permissionCatalogRepository,
+  );
 
   return {
     db,
@@ -47,7 +54,7 @@ export function buildServices(env: Env) {
     authorizationService,
     userService,
     tokenService,
-    rolesService,
+    roleService,
   };
 }
 

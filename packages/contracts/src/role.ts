@@ -14,3 +14,15 @@ export const CreateRoleSchema = z.object({
   description: RequiredString,
 });
 export type CreateRoleSchema = z.infer<typeof CreateRoleSchema>;
+
+export const PermissionItemSchema = z.object({
+  key: RequiredString,
+  label: RequiredString,
+  description: z.string().nullable(),
+});
+export type PermissionItemSchema = z.infer<typeof PermissionItemSchema>;
+
+export const PermissionCategorySchema = z.object({
+  name: RequiredString,
+  items: z.array(PermissionItemSchema),
+});
