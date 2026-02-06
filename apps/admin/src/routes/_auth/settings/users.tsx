@@ -79,58 +79,53 @@ function RouteComponent() {
           <LoadingIcon className="size-8 text-primary-600" />
         </div>
       ) : (
-        <div className="-mx-5 -my-6 sm:-mx-6">
-          <table
-            className={clsx(
-              "relative min-w-full divide-y divide-gray-300  w-full px-5 py-6 sm:px-6",
-            )}
-          >
-            <thead className="bg-gray-50 sticky -top-6 border-b outline-gray-300 outline-1">
-              {table.getHeaderGroups().map((headerGroup, index, arr) => (
-                <tr key={headerGroup.id}>
-                  {headerGroup.headers.map((header) => (
-                    <th
-                      key={header.id}
-                      className={clsx(
-                        "py-3.5 pr-3 pl-4 text-left text-sm font-semibold text-gray-900",
-                        index === 0 && "sm:pl-6",
-                        index === arr.length - 1 && "sm:pr-6",
-                      )}
-                    >
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext(),
-                          )}
-                    </th>
-                  ))}
-                </tr>
-              ))}
-            </thead>
-            <tbody className="divide-y divide-gray-200 bg-white">
-              {table.getRowModel().rows.map((row) => (
-                <tr key={row.id}>
-                  {row.getVisibleCells().map((cell, index, arr) => (
-                    <td
-                      key={cell.id}
-                      className={clsx(
-                        "px-3 py-4 text-sm whitespace-nowrap text-gray-500",
-                        index === 0 && "sm:pl-6",
-                        index === arr.length - 1 && "sm:pr-6 text-right",
-                      )}
-                    >
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext(),
-                      )}
-                    </td>
-                  ))}
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        <table
+          className={clsx(
+            "relative min-w-full divide-y divide-gray-300  w-full px-5 py-6 sm:px-6",
+          )}
+        >
+          <thead className="bg-gray-50 sticky -top-6 border-b outline-gray-300 outline-1">
+            {table.getHeaderGroups().map((headerGroup, index, arr) => (
+              <tr key={headerGroup.id}>
+                {headerGroup.headers.map((header) => (
+                  <th
+                    key={header.id}
+                    className={clsx(
+                      "py-3.5 pr-3 pl-4 text-left text-sm font-semibold text-gray-900",
+                      index === 0 && "sm:pl-6",
+                      index === arr.length - 1 && "sm:pr-6",
+                    )}
+                  >
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext(),
+                        )}
+                  </th>
+                ))}
+              </tr>
+            ))}
+          </thead>
+          <tbody className="divide-y divide-gray-200 bg-white">
+            {table.getRowModel().rows.map((row) => (
+              <tr key={row.id}>
+                {row.getVisibleCells().map((cell, index, arr) => (
+                  <td
+                    key={cell.id}
+                    className={clsx(
+                      "px-3 py-4 text-sm whitespace-nowrap text-gray-500",
+                      index === 0 && "sm:pl-6",
+                      index === arr.length - 1 && "sm:pr-6 text-right",
+                    )}
+                  >
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
       )}
     </AuthLayout>
   );

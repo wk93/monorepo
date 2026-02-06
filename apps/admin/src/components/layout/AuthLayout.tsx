@@ -266,7 +266,7 @@ const AuthLayout: React.FC<Props> = ({ title, children, actions }) => {
 
       <main className="relative -mt-32 flex-1 flex min-h-0">
         <div className="mx-auto max-w-7xl px-4 pb-8 sm:px-6 lg:px-8 flex-1 flex flex-col min-h-0">
-          <div className="rounded-lg bg-white px-5 py-6 shadow-sm sm:px-6 flex-1 min-h-0 overflow-y-auto">
+          <div className="rounded-lg bg-white shadow-sm flex-1 min-h-0 overflow-y-auto">
             {children}
           </div>
         </div>
